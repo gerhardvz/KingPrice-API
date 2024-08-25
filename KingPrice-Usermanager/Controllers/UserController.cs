@@ -130,11 +130,11 @@ public class UserController : ControllerBase
     /// <returns></returns>
     [HttpPut]
     [Route("Update")]
-    public async Task<IActionResult> UpdateUser()
+    public async Task<IActionResult> UpdateUser([FromBody] User user)
     {
         try
         {
-            // _userManagementService.UpdateUser()
+            _userManagementService.UpdateUser(user);
             return Ok();
         }
         catch (Exception e)

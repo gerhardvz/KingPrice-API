@@ -101,7 +101,13 @@ public class UserManagementService : IUserManagementService
 
     public bool UpdateUser(User user)
     {
-        throw new NotImplementedException();
+        var existingUser = GetUser(user.Id)??throw new Exception("User does not exist");
+
+        existingUser.Name = user.Name;
+        existingUser.Surname = user.Surname;
+        existingUser.Email = user.Email;
+        _db.SaveChanges();
+        return true;
     }
 
     public int UserCount()
