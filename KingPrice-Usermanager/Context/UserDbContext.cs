@@ -20,6 +20,7 @@ public class UserDbContext : DbContext
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Seed();
         modelBuilder.Entity<User>(b =>
         {
             b.HasMany<Group>(x => x.Groups)
