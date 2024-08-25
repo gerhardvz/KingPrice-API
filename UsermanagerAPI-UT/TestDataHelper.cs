@@ -1,53 +1,53 @@
-using MrPrice_Usermanager.Models;
+using KingPrice_Usermanager.Models;
 
 namespace UsermanagerAPI_UT;
 
 public static class TestDataHelper
 {
-    
-    public static IQueryable<User> GetFakeEmployeeList()
+    public static List<User> GetFakeEmployeeList()
     {
-        return new List<User>()
+        return new List<User>
         {
             new()
             {
                 Id = 1,
                 Name = "John",
-                Surname = "Doe", 
-                Email = "J.D@gmail.com",
+                Surname = "Doe",
+                Email = "J.D@gmail.com"
             },
             new()
             {
                 Id = 2,
                 Name = "Mark Luther",
-                Email = "M.L@gmail.com",
+                Email = "M.L@gmail.com"
             }
-        }.AsQueryable();
+        };
     }
+
     public static List<Group> GetFakeGroupsList()
     {
-        return new List<Group>()
+        return new List<Group>
         {
             new()
             {
                 Id = 1,
                 Name = "Admins",
-                Users = [], 
-                Permissions = [],
+                Users = [],
+                Permissions = []
             },
             new()
             {
                 Id = 2,
                 Name = "Viewers",
                 Users = [],
-                Permissions = [],
+                Permissions = []
             },
             new()
             {
                 Id = 3,
                 Name = "Clients",
                 Users = [],
-                Permissions = [],
+                Permissions = []
             }
         };
     }

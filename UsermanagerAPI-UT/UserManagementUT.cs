@@ -1,16 +1,12 @@
-using AutoFixture;
-using Microsoft.AspNetCore.Http.HttpResults;
+using KingPrice_Usermanager.Context;
+using KingPrice_Usermanager.Models;
+using KingPrice_Usermanager.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Moq;
-using MrPrice_Usermanager.Context;
-using MrPrice_Usermanager.Models;
-using MrPrice_Usermanager.Services;
+using Moq.EntityFrameworkCore;
 
 namespace UsermanagerAPI_UT;
-
-using Moq.EntityFrameworkCore;
 
 public class UserManagementUT
 {
@@ -29,7 +25,7 @@ public class UserManagementUT
         _usersDb.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
 
 
-        // _dbContextMock.Setup(x => x.Users).ReturnsDbSet(TestDataHelper.GetFakeEmployeeList());
+        _dbContextMock.Setup(x => x.Users).ReturnsDbSet(TestDataHelper.GetFakeEmployeeList());
         // _usersDb.Setup(x => x.Add(It.IsAny<User>()))
         //     .Callback<User>(s=>TestDataHelper.GetFakeEmployeeList().Add(s));
         _dbContextMock.Setup(x => x.Users).Returns(_usersDb.Object);
@@ -44,9 +40,9 @@ public class UserManagementUT
         //Arrange
 
         //Act
-        Logger<UserManagementService> umsLogger = new Logger<UserManagementService>(new LoggerFactory());
-        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object, umsLogger);
-        var users = (userManagementService.GetUsers());
+        var umsLogger = new Logger<UserManagementService>(new LoggerFactory());
+        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object);
+        var users = userManagementService.GetUsers();
         //Assert
         Assert.That(users, Is.Not.Null);
         Assert.That(users.Count, Is.EqualTo(2));
@@ -63,11 +59,11 @@ public class UserManagementUT
         dbContextMock.Setup(x => x.Users).Returns(_usersDb.Object);
 
         //Act
-        Logger<UserManagementService> umsLogger = new Logger<UserManagementService>(new LoggerFactory());
-        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object, umsLogger);
-        var status = (userManagementService.AddUser("John", "Deere", "JDeere@gmail.com"));
-        var userCount = (userManagementService.UserCount());
-        var users = (userManagementService.GetUsers());
+        var umsLogger = new Logger<UserManagementService>(new LoggerFactory());
+        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object);
+        var status = userManagementService.AddUser("John", "Deere", "JDeere@gmail.com");
+        var userCount = userManagementService.UserCount();
+        var users = userManagementService.GetUsers();
         var nUser = new User("John", "Doe", "J.D@gmail.com");
         //Assert
         usersDb.Verify(x => x.Add(nUser), Times.Once);
@@ -82,9 +78,9 @@ public class UserManagementUT
         //Arrange
 
         //Act
-        Logger<UserManagementService> umsLogger = new Logger<UserManagementService>(new LoggerFactory());
-        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object, umsLogger);
-        var count = (userManagementService.UserCount());
+        var umsLogger = new Logger<UserManagementService>(new LoggerFactory());
+        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object);
+        var count = userManagementService.UserCount();
         //Assert
         Assert.That(count, Is.EqualTo(2));
     }
@@ -95,9 +91,9 @@ public class UserManagementUT
         //Arrange
 
         //Act
-        Logger<UserManagementService> umsLogger = new Logger<UserManagementService>(new LoggerFactory());
-        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object, umsLogger);
-        var status = (userManagementService.AddUser("John", "Doe", "J.D@gmail.com"));
+        var umsLogger = new Logger<UserManagementService>(new LoggerFactory());
+        IUserManagementService userManagementService = new UserManagementService(_dbContextMock.Object);
+        var status = userManagementService.AddUser("John", "Doe", "J.D@gmail.com");
         var nUser = new User("John", "Doe", "J.D@gmail.com");
         //Assert
         _usersDb.Verify(x => x.Add(It.Is<User>(y => y == nUser)), Times.Once);
