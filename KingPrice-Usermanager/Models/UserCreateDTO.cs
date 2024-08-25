@@ -1,9 +1,8 @@
 namespace MrPrice_Usermanager.Models;
 
-public class User
+public class UserCreateDTO
 {
-    public long Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public List<Group> Groups { get; set; }
+    public string Email { get; set; }
 }
