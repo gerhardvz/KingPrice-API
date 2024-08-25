@@ -10,6 +10,10 @@ public class UserDbContext : DbContext
     {
     }
 
+    protected UserDbContext()
+    {
+    }
+
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Group> Groups { set; get; }
     public virtual DbSet<Permission> Permissions { get; set; }
