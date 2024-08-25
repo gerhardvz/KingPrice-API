@@ -6,13 +6,13 @@ namespace KingPrice_Usermanager.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GroupController : ControllerBase
+public class PermissionsController : ControllerBase
 {
-    private readonly IGroupManagementService _groupManagementService;
+    private readonly IPermissionManagementService _permissionManagementService;
 
-    public GroupController(IGroupManagementService groupManagementService)
+    public PermissionsController(IPermissionManagementService permissionManagementService)
     {
-        _groupManagementService = groupManagementService;
+        _permissionManagementService = permissionManagementService;
     }
 
     /// <summary>
@@ -25,18 +25,18 @@ public class GroupController : ControllerBase
     {
         try
         {
-            var groups = await _groupManagementService.GetGroups();
+            var groups = await _permissionManagementService.GetPermissions();
             return Ok(groups);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest("Failed to Get Users");
+            return BadRequest("Failed to Get Groups");
         }
     }
 
     /// <summary>
-    ///     Returns Group with ID
+    ///     Returns Permission with ID
     /// </summary>
     /// <param name="id">group ID - long</param>
     /// <returns></returns>
@@ -46,7 +46,7 @@ public class GroupController : ControllerBase
     {
         try
         {
-            var group = await _groupManagementService.GetGroup(id);
+            var group = await _permissionManagementService.GetPermission(id);
             if (group == null) return NoContent();
 
             return Ok(group);
@@ -54,7 +54,7 @@ public class GroupController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest($"Failed to Get User with ID: {id}");
+            return BadRequest($"Failed to Get Group with ID: {id}");
         }
     }
 
@@ -65,33 +65,34 @@ public class GroupController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [Route("Add")]
-    public async Task<IActionResult> AddGroup([FromBody] string groupName)
+    public async Task<IActionResult> AddPermission([FromBody] string groupName)
     {
         try
         {
-            if (await _groupManagementService.AddGroup(new Group { Name = groupName })) return Ok("Group added.");
+            if (await _permissionManagementService.AddPermission(new Permission { Name = groupName }))
+                return Ok("Permission added.");
 
-            return BadRequest("Group not added.");
+            return BadRequest("Permission not added.");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest("Failed to add Group");
+            return BadRequest("Failed to add Permission");
         }
     }
 
     /// <summary>
     ///     Removes group by their ID
     /// </summary>
-    /// <param name="id">Group ID - long</param>
+    /// <param name="id">Permission ID - long</param>
     /// <returns></returns>
     [HttpDelete]
     [Route("{id}")]
-    public async Task<IActionResult> DeleteGroup([FromRoute] int id)
+    public async Task<IActionResult> DeletePermission([FromRoute] int id)
     {
         try
         {
-            await _groupManagementService.DeleteGroup(id);
+            await _permissionManagementService.DeletePermission(id);
             return Ok("Group Deleted");
         }
         catch (Exception e)
@@ -108,18 +109,18 @@ public class GroupController : ControllerBase
     /// <param name="userId"></param>
     /// <returns></returns>
     [HttpPost]
-    [Route("{id}/AddUser")]
-    public async Task<IActionResult> AddUserToGroup([FromRoute] int id, [FromQuery] long userId)
+    [Route("{id}/AddGroup")]
+    public async Task<IActionResult> AddGroupToPermission([FromRoute] int id, [FromQuery] int groupId)
     {
         try
         {
-            await _groupManagementService.AddUserToGroup(userId, id);
-            return Ok("User added to group");
+            await _permissionManagementService.AddGroupToPermission(groupId, id);
+            return Ok("Group added to group");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest("Failed to add user to Group");
+            return BadRequest("Failed to add user to Permission");
         }
     }
 
@@ -130,18 +131,18 @@ public class GroupController : ControllerBase
     /// <param name="userId"></param>
     /// <returns></returns>
     [HttpDelete]
-    [Route("{id}/RemoveUser")]
-    public async Task<IActionResult> RemoveUserFromGroup([FromRoute] int id, [FromQuery] long userId)
+    [Route("{id}/RemoveGroup")]
+    public async Task<IActionResult> RemoveGroupFromPermission([FromRoute] int id, [FromQuery] int userId)
     {
         try
         {
-            await _groupManagementService.RemoveUserFromGroup(userId, id);
-            return Ok("User added to group");
+            await _permissionManagementService.RemoveGroupFromPermission(userId, id);
+            return Ok("Group added to group");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return BadRequest("Failed to add user to Group");
+            return BadRequest("Failed to add user to Permission");
         }
     }
 
@@ -151,11 +152,11 @@ public class GroupController : ControllerBase
     /// <returns></returns>
     [HttpPut]
     [Route("Update")]
-    public async Task<IActionResult> UpdateGroup()
+    public async Task<IActionResult> UpdatePermission()
     {
         try
         {
-            // _groupManagementService.UpdateGroup()
+            // _groupManagementService.UpdatePermission()
             return Ok();
         }
         catch (Exception e)

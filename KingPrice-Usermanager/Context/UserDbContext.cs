@@ -1,21 +1,18 @@
+using KingPrice_Usermanager.Models;
 using Microsoft.EntityFrameworkCore;
-using MrPrice_Usermanager.Models;
 
-namespace MrPrice_Usermanager.Context;
+namespace KingPrice_Usermanager.Context;
 
 public class UserDbContext : DbContext
 {
+    /// <inheritdoc />
+    public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
+    {
+    }
+
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Group> Groups { set; get; }
     public virtual DbSet<Permission> Permissions { get; set; }
-
-   
-
-    /// <inheritdoc />
-    public UserDbContext(DbContextOptions<UserDbContext> options):base(options)
-    {
-      
-    }
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,9 +24,8 @@ public class UserDbContext : DbContext
                 .WithMany(x => x.Users);
             b.HasKey(x => x.Id);
             b.HasIndex(x => x.Email).IsUnique();
-            
         });
-        
+
         modelBuilder.Entity<Group>(b =>
         {
             b.HasMany<Permission>(x => x.Permissions)
@@ -37,7 +33,7 @@ public class UserDbContext : DbContext
             b.HasKey(x => x.Id);
             b.HasIndex(x => x.Name);
         });
-        
+
         modelBuilder.Entity<Permission>(b =>
         {
             b.HasKey(x => x.Id);

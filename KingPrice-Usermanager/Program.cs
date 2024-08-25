@@ -1,9 +1,9 @@
 using System.Reflection;
 using System.Text.Json.Serialization;
+using KingPrice_Usermanager.Context;
+using KingPrice_Usermanager.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using MrPrice_Usermanager.Context;
-using MrPrice_Usermanager.Services;
 using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +21,8 @@ builder.Services.AddSwaggerGen(options =>
         Contact = new OpenApiContact
         {
             Name = "Gerhard van Zyl",
-            Email = "gerhard@schoongezicht.com",
-        },
+            Email = "gerhard@schoongezicht.com"
+        }
     });
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -39,6 +39,7 @@ builder.Services.AddDbContext<UserDbContext>(options => { options.UseNpgsql(data
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IGroupManagementService, GroupManagementService>();
 builder.Services.AddScoped<IPermissionManagementService, PermissionManagementService>();
+builder.Services.AddScoped<IStatsService, StatsService>();
 
 var app = builder.Build();
 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

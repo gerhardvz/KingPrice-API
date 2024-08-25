@@ -1,11 +1,11 @@
-namespace MrPrice_Usermanager.Models;
+namespace KingPrice_Usermanager.Models;
 
 public class User
 {
     public User()
     {
     }
-    
+
     public User(string name, string surname, string email)
     {
         Name = name;
@@ -30,7 +30,6 @@ public class User
         Groups = groups;
     }
 
-    
 
     public long Id { get; set; }
     public string Name { get; set; }

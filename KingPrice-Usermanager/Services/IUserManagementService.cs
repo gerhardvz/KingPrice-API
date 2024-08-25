@@ -1,8 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using MrPrice_Usermanager.Context;
-using MrPrice_Usermanager.Models;
+using KingPrice_Usermanager.Context;
+using KingPrice_Usermanager.Models;
 
-namespace MrPrice_Usermanager.Services;
+namespace KingPrice_Usermanager.Services;
 
 public interface IUserManagementService
 {
@@ -10,6 +9,7 @@ public interface IUserManagementService
     public bool AddUser(User user);
 
     public User? GetUser(long id);
+    public List<int> GetUserGroups(long id);
     public List<User> GetUsers();
     public bool DeleteUser(long id);
 
@@ -19,13 +19,12 @@ public interface IUserManagementService
 
 public class UserManagementService : IUserManagementService
 {
-    private UserDbContext _db { get; set; }
-
-
     public UserManagementService(UserDbContext db)
     {
         _db = db;
     }
+
+    private UserDbContext _db { get; }
 
     public bool AddUser(string name, string surname, string email)
     {
@@ -65,7 +64,14 @@ public class UserManagementService : IUserManagementService
     {
         var user = _db.Users.Find(id);
         _db.Entry(user).Collection(g => g.Groups).Load();
+        _db.Entry(user).Collection(g => g.Groups).Load();
         return user;
+    }
+
+    public List<int> GetUserGroups(long id)
+    {
+        var user = GetUser(id);
+        return _db.Groups.Where(x => x.Users.Contains(user)).Select(x => x.Id).ToList();
     }
 
     public List<User> GetUsers()
@@ -77,10 +83,8 @@ public class UserManagementService : IUserManagementService
     {
         var user = GetUser(id);
         if (user == null)
-        {
             //user does not exist so can't delete
             return false;
-        }
 
         try
         {

@@ -1,4 +1,4 @@
-namespace MrPrice_Usermanager.Models;
+namespace KingPrice_Usermanager.Models;
 
 public class UserCreateDTO
 {

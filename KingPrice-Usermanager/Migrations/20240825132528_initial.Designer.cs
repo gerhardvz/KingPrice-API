@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MrPrice_Usermanager.Context;
+using KingPrice_Usermanager.Context;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MrPrice_Usermanager.Migrations
+namespace KingPrice_Usermanager.Migrations
 {
     [DbContext(typeof(UserDbContext))]
     [Migration("20240825132528_initial")]
@@ -54,7 +54,7 @@ namespace MrPrice_Usermanager.Migrations
                     b.ToTable("GroupUser");
                 });
 
-            modelBuilder.Entity("MrPrice_Usermanager.Models.Group", b =>
+            modelBuilder.Entity("KingPrice_Usermanager.Models.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +73,7 @@ namespace MrPrice_Usermanager.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("MrPrice_Usermanager.Models.Permission", b =>
+            modelBuilder.Entity("KingPrice_Usermanager.Models.Permission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,7 +92,7 @@ namespace MrPrice_Usermanager.Migrations
                     b.ToTable("Permissions");
                 });
 
-            modelBuilder.Entity("MrPrice_Usermanager.Models.User", b =>
+            modelBuilder.Entity("KingPrice_Usermanager.Models.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,13 +122,13 @@ namespace MrPrice_Usermanager.Migrations
 
             modelBuilder.Entity("GroupPermission", b =>
                 {
-                    b.HasOne("MrPrice_Usermanager.Models.Group", null)
+                    b.HasOne("KingPrice_Usermanager.Models.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MrPrice_Usermanager.Models.Permission", null)
+                    b.HasOne("KingPrice_Usermanager.Models.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -137,13 +137,13 @@ namespace MrPrice_Usermanager.Migrations
 
             modelBuilder.Entity("GroupUser", b =>
                 {
-                    b.HasOne("MrPrice_Usermanager.Models.Group", null)
+                    b.HasOne("KingPrice_Usermanager.Models.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MrPrice_Usermanager.Models.User", null)
+                    b.HasOne("KingPrice_Usermanager.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
